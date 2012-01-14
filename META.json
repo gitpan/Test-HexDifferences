@@ -1,0 +1,60 @@
+{
+   "abstract" : "Test::HexDifferences - Test binary as hexadecimal string",
+   "author" : [
+      "Steffen Winkler <steffenw at cpan.org>"
+   ],
+   "dynamic_config" : 1,
+   "generated_by" : "Module::Build version 0.38, CPAN::Meta::Converter version 2.112621",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Test-HexDifferences",
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "Test::More" : 0,
+            "Test::NoWarnings" : 0,
+            "Test::Tester" : 0
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "Module::Build" : "0.38"
+         }
+      },
+      "runtime" : {
+         "recommends" : {
+            "Test::Pod" : "1.14",
+            "Test::Pod::Coverage" : "1.04"
+         },
+         "requires" : {
+            "Hash::Util" : 0,
+            "Perl6::Export::Attrs" : 0,
+            "Test::Differences" : 0,
+            "perl" : "5.006",
+            "version" : 0
+         }
+      }
+   },
+   "provides" : {
+      "Test::HexDifferences" : {
+         "file" : "lib/Test/HexDifferences.pm",
+         "version" : "0.001"
+      },
+      "Test::HexDifferences::FormatHex" : {
+         "file" : "lib/Test/HexDifferences/FormatHex.pm",
+         "version" : "0.001"
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "license" : [
+         "http://dev.perl.org/licenses/"
+      ]
+   },
+   "version" : "0.001"
+}
