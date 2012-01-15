@@ -3,13 +3,13 @@ package Test::HexDifferences; ## no critic (TidyCode)
 use strict;
 use warnings;
 
-our $VERSION = '0.001';
+our $VERSION = '0.002';
 
 use Test::Differences qw(eq_or_diff);
-use Test::HexDifferences::FormatHex qw(format_hex);
+use Test::HexDifferences::HexDump qw(hex_dump);
 use Perl6::Export::Attrs;
 
-sub eq_or_hex_diff :Export(:DEFAULT) {
+sub eq_or_dump_diff :Export(:DEFAULT) {
     my ($got, $expected, @more) = @_;
 
     my $attr_ref
@@ -30,9 +30,26 @@ sub eq_or_hex_diff :Export(:DEFAULT) {
             $expected,
         )
         : (
-            format_hex($got, $attr_ref),
-            format_hex($expected, $attr_ref),
+            hex_dump($got, $attr_ref),
+            hex_dump($expected, $attr_ref),
         ),
+        @more,
+    );
+}
+
+sub dumped_eq_dump_or_diff :Export(:DEFAULT) {
+    my ($got, $expected, @more) = @_;
+
+    my $attr_ref
+        = ( @more && ref $more[0] eq 'HASH' )
+        ? shift @more
+        : ();
+
+    return eq_or_diff(
+        defined $got
+            ? hex_dump($got, $attr_ref)
+            : $got,
+        $expected,
         @more,
     );
 }
@@ -49,45 +66,66 @@ Test::HexDifferences - Test binary as hexadecimal string
 
 =head1 VERSION
 
-0.001
+0.002
 
 =head1 SYNOPSIS
 
     use Test::HexDifferences;
 
-    eq_or_hex_diff(
+    eq_or_dump_diff(
         $got,
         $expected,
     );
 
-    eq_or_hex_diff(
+    eq_or_dump_diff(
         $got,
         $expected,
         $test_name,
     );
 
-    eq_or_hex_diff(
+    eq_or_dump_diff(
         $got,
         $expected,
         {
             address => $start_address,
-            format  => "%a : %4C : '%d'\n",
+            format  => "%a : %4C : %d\n",
         }
         $test_name,
     );
 
 If C<$got> or C<$expected> is C<undef> or a reference,
 the hexadecimal formatter is off.
-Then C<eq_or_hex_diff> is the same like C<eq_or_diff> of
+Then C<eq_or_dump_diff> is the same like C<eq_or_diff> of
 L<Test::Differences|Test::Differences>.
 
-See L<Test::HexDifferences::FormatHex|Test::HexDifferences::FormatHex>
+    dumped_eq_dump_or_diff(
+        $got_value,
+        $expected_dump,
+    );
+
+    dumped_eq_dump_or_diff(
+        $got_value,
+        $expected_dump,
+        $test_name,
+    );
+
+    dumped_eq_dump_or_diff(
+        $got_value,
+        $expected_dump,
+        {
+            address => $start_address,
+            format  => "%a : %4C : %d\n",
+        }
+        $test_name,
+    );
+
+See L<Test::HexDifferences::HexDump|Test::HexDifferences::HexDump>
 for the format description.
 
 =head1 EXAMPLE
 
 Inside of this Distribution is a directory named example.
-Run this *.pl files.
+Run this *.t files.
 
 =head1 DESCRIPTION
 
@@ -101,15 +139,29 @@ The are some special cases for testing binary data.
 
 =item * Structured binary e.g. 2 byte length followed by bytes better are shown as it is.
 
+=item * Compare 2 binary or 1 binary and a dump.
+
 =back
 
 =head1 SUBROUTINES/METHODS
 
-=head2 subroutine eq_or_hex_diff
+=head2 subroutine eq_or_dump_diff
 
-    eq_or_hex_diff(
-        $got_data,
-        $expected_data,
+    eq_or_dump_diff(
+        $got_value,
+        $expected_value,
+        {                                      # optional hash reference
+            address => $display_start_address, # optional
+            format  => $format_string,         # optional
+        }
+        $test_name,                            # optional
+    );
+
+=head2 subroutine dumped_eq_dump_or_diff
+
+    dumped_eq_dump_or_diff(
+        $got_value,
+        $expected_dump,
         {                                      # optional hash reference
             address => $display_start_address, # optional
             format  => $format_string,         # optional
@@ -129,7 +181,7 @@ nothing
 
 L<Test::Differences|Test::Differences>
 
-L<Test::HexDifferences::FormatHex|Test::HexDifferences::FormatHex>
+L<Test::HexDifferences::HexDump|Test::HexDifferences::HexDump>
 
 L<Perl6::Export::Attrs|Perl6::Export::Attrs>
 
@@ -145,7 +197,7 @@ none
 
 L<Test::Differences|Test::Differences>
 
-L<Test::HexDifferences::FormatHex|Test::HexDifferences::FormatHex>
+L<Test::HexDifferences::HexDump|Test::HexDifferences::HexDump>
 
 =head1 AUTHOR
 

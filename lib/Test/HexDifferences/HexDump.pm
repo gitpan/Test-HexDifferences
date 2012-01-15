@@ -1,16 +1,16 @@
-package Test::HexDifferences::FormatHex;  ## no critic (TidyCode)
+package Test::HexDifferences::HexDump;  ## no critic (TidyCode)
 
 use strict;
 use warnings;
 
-our $VERSION = '0.001';
+our $VERSION = '0.002';
 
 use Hash::Util qw(lock_keys);
 use Perl6::Export::Attrs;
 
-my $default_format = "%a : %4C : '%d'\n";
+my $default_format = "%a : %4C : %d\n";
 
-sub format_hex :Export(:DEFAULT) {
+sub hex_dump :Export(:DEFAULT) {
     my ($data, $attr_ref) = @_;
 
     defined $data
@@ -193,10 +193,13 @@ sub _format_ascii {
         do {
             my $data = substr $data_pool->{data}, 0, $data_pool->{data_length};
             $data =~ s{
-                ( [\x20-\xFE] )
+                ( ['"\\] )
+                | ( [!-~] )
                 | .
             } {
-                defined $1 ? $1 : q{.}
+                defined $1   ? q{.}
+                : defined $2 ? $2
+                :              q{.}
             }xmsge;
             $data_pool->{output} .= $data;
             q{};
@@ -212,25 +215,25 @@ __END__
 
 =head1 NAME
 
-Test::HexDifferences::FormatHex - Format binary to hexadecimal strings
+Test::HexDifferences::HexDump - Format binary to hexadecimal strings
 
 =head1 VERSION
 
-0.001
+0.002
 
 =head1 SYNOPSIS
 
-    use Test::HexDifferences::FormatHex;
+    use Test::HexDifferences::HexDump;
 
-    $string = format_hex(
+    $string = hex_dump(
         $binary,
     );
 
-    $string = format_hex(
+    $string = hex_dump(
         $binary,
         {
             address => $start_address,
-            format  => "%a : %4C : '%d'\n",
+            format  => "%a : %4C : %d\n",
         }
     );
 
@@ -240,17 +243,20 @@ Every format element in the format string is starting with % like sprintf.
 
 =head3 Data format
 
+It is not very clever to use little-endian formats for tests.
+There is a fallback to bytes if multibyte formats can not displayed.
+
  %C  - unsigned char
  %S  - unsigned 16-bit
+ %S< - unsigned 16-bit, little-endian
+ %S> - unsigned 16-bit, big-endian
+ %v  - unsigned 16-bit, little-endian
+ %n  - unsigned 16-bit, big-endian
  %L  - unsigned 32-bit
  %L< - unsigned 32-bit, little-endian
  %L> - unsigned 32-bit, big-endian
  %V  - unsigned 32-bit, little-endian
  %N  - unsigned 32-bit, big-endian
- %S< - unsigned 16-bit, little-endian
- %S> - unsigned 16-bit, big-endian
- %v  - unsigned 16-bit, little-endian
- %n  - unsigned 16-bit, big-endian
  %Q  - unsigned 64-bit
  %Q< - unsigned 64-bit, little-endian
  %Q> - unsigned 64-bit, big-endian
@@ -262,6 +268,11 @@ Every format element in the format string is starting with % like sprintf.
  %8a - 32 bit address
 
 =head3 ascii format
+
+It can not display all chars.
+Fist it must be a printable ascii char.
+It can not be anything of space, q{.}, q{'}, q{"} or q{\}.
+Otherwise q{.} will be printed.
 
  %d - display ascii
 
@@ -280,32 +291,32 @@ Every format element in the format string is starting with % like sprintf.
 
 The default format is:
 
- "%a : %4C : '%d'\n"
+ "%a : %4C : %d\n"
 
 or fully written as
 
- "%a : %4C : '%d'\n%*x"
+ "%a : %4C : %d\n%*x"
 
 =head2 Complex formats
 
 The %...x allows to write mixed formats e.g.
 
  Format:
-  %a : %N %4C : '%d'\n%1x%
-  %a : %n %2C : '%d'\n%*x
+  %a : %N %4C : %d\n%1x%
+  %a : %n %2C : %d\n%*x
  Input:
     \0x01\0x23\0x45\0x67\0x89\0xAB\0xCD\0xEF
     \0x01\0x23\0x45\0x67
     \0x89\0xAB\0xCD\0xEF
  Output:
-    0000 : 01234567 89 AB CD EF : '.#-Eg...'
-    0008 : 0123 45 67 : '.#-E'
-    000C : 89AB CD EF : 'g...'
+    0000 : 01234567 89 AB CD EF : .#-Eg...
+    0008 : 0123 45 67 : .#-E
+    000C : 89AB CD EF : g...
 
 =head1 EXAMPLE
 
 Inside of this Distribution is a directory named example.
-Run this *.pl files.
+Run this *.t files.
 
 =head1 DESCRIPTION
 
@@ -313,9 +324,9 @@ This is a formatter for binary data.
 
 =head1 SUBROUTINES/METHODS
 
-=head2 subroutine format_hex
+=head2 subroutine hex_dump
 
-    $string = format_hex(
+    $string = hex_dump(
         $binary,
         {
             address => $display_start_address,
