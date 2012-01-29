@@ -18,10 +18,10 @@ name: Test-HexDifferences
 provides:
   Test::HexDifferences:
     file: lib/Test/HexDifferences.pm
-    version: 0.003
+    version: 0.004
   Test::HexDifferences::HexDump:
     file: lib/Test/HexDifferences/HexDump.pm
-    version: 0.003
+    version: 0.004
 recommends:
   Test::Pod: 1.14
   Test::Pod::Coverage: 1.04
@@ -33,4 +33,4 @@ requires:
   version: 0
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.003
+version: 0.004
