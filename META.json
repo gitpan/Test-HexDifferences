@@ -34,7 +34,7 @@
          "requires" : {
             "Hash::Util" : 0,
             "Perl6::Export::Attrs" : 0,
-            "Test::Differences" : 0,
+            "Test::Differences" : "0.60",
             "perl" : "5.006",
             "version" : 0
          }
@@ -43,7 +43,7 @@
    "provides" : {
       "Test::HexDifferences" : {
          "file" : "lib/Test/HexDifferences.pm",
-         "version" : "0.005"
+         "version" : "0.006"
       },
       "Test::HexDifferences::HexDump" : {
          "file" : "lib/Test/HexDifferences/HexDump.pm",
@@ -56,5 +56,5 @@
          "http://dev.perl.org/licenses/"
       ]
    },
-   "version" : "0.005"
+   "version" : "0.006"
 }

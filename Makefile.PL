@@ -8,7 +8,7 @@ WriteMakefile
   'PREREQ_PM' => {
                    'Hash::Util' => 0,
                    'Perl6::Export::Attrs' => 0,
-                   'Test::Differences' => 0,
+                   'Test::Differences' => '0.60',
                    'Test::More' => 0,
                    'Test::NoWarnings' => 0,
                    'Test::Tester' => 0,
