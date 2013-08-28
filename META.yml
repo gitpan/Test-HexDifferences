@@ -18,7 +18,7 @@ name: Test-HexDifferences
 provides:
   Test::HexDifferences:
     file: lib/Test/HexDifferences.pm
-    version: 0.006
+    version: 0.007
   Test::HexDifferences::HexDump:
     file: lib/Test/HexDifferences/HexDump.pm
     version: 0.004
@@ -33,4 +33,4 @@ requires:
   version: 0
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.006
+version: 0.007

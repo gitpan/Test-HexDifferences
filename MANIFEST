@@ -1,4 +1,3 @@
-Build.PL
 Changes
 example/01_eq_or_dump_diff.t
 example/02_dumped_eq_dump_or_diff.t
