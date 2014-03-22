@@ -4,7 +4,7 @@
       "Steffen Winkler <steffenw at cpan.org>"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.38, CPAN::Meta::Converter version 2.112621",
+   "generated_by" : "Module::Build version 0.38, CPAN::Meta::Converter version 2.132140",
    "license" : [
       "perl_5"
    ],
@@ -16,9 +16,9 @@
    "prereqs" : {
       "build" : {
          "requires" : {
-            "Test::More" : 0,
-            "Test::NoWarnings" : 0,
-            "Test::Tester" : 0
+            "Test::More" : "0",
+            "Test::NoWarnings" : "0",
+            "Test::Tester" : "0"
          }
       },
       "configure" : {
@@ -32,22 +32,22 @@
             "Test::Pod::Coverage" : "1.04"
          },
          "requires" : {
-            "Hash::Util" : 0,
-            "Perl6::Export::Attrs" : 0,
+            "Hash::Util" : "0",
+            "Sub::Exporter" : "0",
             "Test::Differences" : "0.60",
             "perl" : "5.006",
-            "version" : 0
+            "version" : "0"
          }
       }
    },
    "provides" : {
       "Test::HexDifferences" : {
          "file" : "lib/Test/HexDifferences.pm",
-         "version" : "0.007"
+         "version" : "0.008"
       },
       "Test::HexDifferences::HexDump" : {
          "file" : "lib/Test/HexDifferences/HexDump.pm",
-         "version" : "0.004"
+         "version" : "0.008"
       }
    },
    "release_status" : "stable",
@@ -56,5 +56,5 @@
          "http://dev.perl.org/licenses/"
       ]
    },
-   "version" : "0.007"
+   "version" : "0.008"
 }
